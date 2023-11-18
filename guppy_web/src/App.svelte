@@ -1,19 +1,9 @@
 <script lang="ts">
-  import Login from './Login.svelte';
-  import UserShowList from './UserShowList.svelte';
+    import UserShowList from "./UserShowList.svelte";
+    import AppBar from "./AppBar.svelte";
 </script>
 
 <main>
-  <Login />
-  <h1>Guppy</h1>
-
-  <hr />
-
-  <UserShowList />
-
-
+    <AppBar />
+    <UserShowList />
 </main>
-
-<style>
-
-</style>

@@ -101,7 +101,7 @@ def create_next_show():
     tx = "example transcript"
     print(f"Transcript: {tx}")
     print("Creating audio file...")
-    transcript_file, audio_file = text_to_audio(tx, "audio.mp3")
+    transcript_file, audio_file = text_to_audio(tx, "audio.aiff")
 
     # create the show and delete the request:
     show_creation_result = client.collection("shows").create(
