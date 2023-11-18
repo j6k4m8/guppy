@@ -1,0 +1,4 @@
+pocketbase
+guidance
+pydantic-settings
+torch
