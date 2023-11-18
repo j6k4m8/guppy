@@ -1,28 +1,30 @@
 <script lang="ts">
-    import { onMount, onDestroy } from 'svelte';
-    import { currentUser, pb } from './lib/pocketbase';
+    import { onMount, onDestroy } from "svelte";
+    import { currentUser, pb } from "./lib/pocketbase";
 
     // Get the attribute props from the parent component
     export let show;
     let shows: any[] = [];
     let episodes: any[] = [];
 
-
     onMount(async () => {
-        episodes = (await pb.collection('episodes').getList(1, 100, {
-            filter: `show.id = '${show.id}'`
-        })).items;
+        episodes = (
+            await pb.collection("episodes").getList(1, 100, {
+                filter: `show.id = '${show.id}'`,
+            })
+        ).items;
     });
 </script>
 
 <div class="card">
     <h2>
-    {show?.title}
+        {show?.title}
     </h2>
 
     <ul>
         <!-- Eps -->
         {#each episodes as ep}
+            <a href={`${pb.baseUrl}/api/files/${ep.collectionId}/${ep.id}/${ep.audio_file}`} target="_blank">▶️</a>
             {ep.title} — {ep.show_index}
         {/each}
     </ul>

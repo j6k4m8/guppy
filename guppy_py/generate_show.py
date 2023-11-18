@@ -1,15 +1,13 @@
-from pocketbase import PocketBase
-from pocketbase.client import FileUpload
+import re
 import subprocess
 import tempfile
 
+from config import GuppyConfig, OpenAIConfig
+
 # import boto3
-from guidance import models, gen, user, assistant, system
-import re
-from config import OpenAIConfig, GuppyConfig
-
-
-# from pocketbase.client import FileUpload
+from guidance import assistant, gen, models, system, user
+from pocketbase import PocketBase
+from pocketbase.client import FileUpload
 
 client = PocketBase("http://127.0.0.1:8090")
 
@@ -32,7 +30,9 @@ def text_to_audio(transcript: str, audio_out: str) -> tuple[str, str]:
         transcript_file = f.name
 
     # Convert to audio
-    subprocess.run(["say", "-f", transcript_file, "-o", audio_out])
+    subprocess.run(["say", "-f", transcript_file, "-o", audio_out + ".aiff"])
+    # Convert to mp3
+    subprocess.run(["ffmpeg", "-i", audio_out + ".aiff", audio_out])
     return transcript_file, audio_out
 
 
@@ -98,10 +98,10 @@ def create_next_show():
     req = show_requests.items[0]
     print(f"Creating show '{req.title}' for user <{req.creator}>")
     # tx = podcast_summary_to_transcript(req.title, req.prompt)
-    tx = "example transcript"
+    tx = "this is an example transcript."
     print(f"Transcript: {tx}")
     print("Creating audio file...")
-    transcript_file, audio_file = text_to_audio(tx, "audio.aiff")
+    transcript_file, audio_file = text_to_audio(tx, "audio.mp3")
 
     # create the show and delete the request:
     show_creation_result = client.collection("shows").create(

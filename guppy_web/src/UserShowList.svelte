@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
     import { currentUser, pb } from "./lib/pocketbase";
+    import NewShowPrompt from "./NewShowPrompt.svelte";
     import ShowDetails from "./ShowDetails.svelte";
 
     let shows: any[] = [];
@@ -21,6 +22,11 @@
     <div class="row">
         <div class="column">
             <h1>User Show List</h1>
+
+            <NewShowPrompt />
+            <hr />
+
+            <h2>my shows</h2>
 
             {#if showRequests.length + shows.length > 0}
                 <ul>
