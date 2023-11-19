@@ -1,10 +1,14 @@
 <script>
     import Login from "./Login.svelte";
+    import GuppyPNG from "./assets/guppy.png";
 </script>
 
 <div class="appbar">
     <div class="row">
-        <div class="column brand">Guppy</div>
+        <div class="column brand">
+            <img src={GuppyPNG} width="32" height="32" alt="StudyGuppy" />
+            Guppy
+        </div>
         <div class="column account">
             <Login />
         </div>

@@ -2,3 +2,4 @@ pocketbase
 guidance
 pydantic-settings
 torch
+boto3
