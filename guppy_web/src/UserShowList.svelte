@@ -21,47 +21,49 @@
 <div class="container">
     <div class="row">
         <div class="column">
-            <h1>User Show List</h1>
-
-            <NewShowPrompt />
-            <hr />
-
-            <h2>my shows</h2>
-
-            {#if showRequests.length + shows.length > 0}
-                <ul>
-                    {#each showRequests as showItem}
-                        <li>
-                            <button on:click={() => {}}>
-                                {showItem.title} —
-                                <!-- Loading spinner -->
-                                {#if showItem.status == "queued"}
-                                    <span>Queued</span>
-                                {:else if showItem.status == "creating"}
-                                    <span>creating</span>
-                                {:else if showItem.status == "errored"}
-                                    <span>errored</span>
-                                {/if}
-                            </button>
-                        </li>
-                    {/each}
-                    {#each shows as showItem}
-                        <li>
-                            <button on:click={() => (selectedShow = showItem)}>
-                                {showItem.title}
-                            </button>
-                        </li>
-                    {/each}
-                </ul>
-            {:else}
-                <p>No shows found for the current user.</p>
-            {/if}
+            <div class="p2">
+                <h1>User Show List</h1>
+                <NewShowPrompt />
+                <hr />
+                <h2>my shows</h2>
+                {#if showRequests.length + shows.length > 0}
+                    <ul>
+                        {#each showRequests as showItem}
+                            <li>
+                                <span>
+                                    {showItem.title} —
+                                    <!-- Loading spinner -->
+                                    {#if showItem.status == "queued"}
+                                        <span>Queued</span>
+                                    {:else if showItem.status == "creating"}
+                                        <span>creating</span>
+                                    {:else if showItem.status == "errored"}
+                                        <span>errored</span>
+                                    {/if}
+                                    — {showItem.created}
+                                </span>
+                            </li>
+                        {/each}
+                        {#each shows as showItem}
+                            <li>
+                                <button on:click={() => (selectedShow = showItem)}>
+                                    {showItem.title} — {showItem.created}
+                                </button>
+                            </li>
+                        {/each}
+                    </ul>
+                {:else}
+                    <p>No shows found for the current user.</p>
+                {/if}
+            </div>
         </div>
 
         <div class="column">
-            {#if selectedShow}
-                <ShowDetails show={selectedShow} />
-            {/if}
+            <div class="p2">
+                {#if selectedShow}
+                    <ShowDetails show={selectedShow} />
+                {/if}
+            </div>
         </div>
     </div>
 </div>
@@ -74,5 +76,9 @@
 
     .container {
         padding: 1em;
+    }
+
+    .p2 {
+        padding: 2em;
     }
 </style>

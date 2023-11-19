@@ -207,7 +207,9 @@ class ShowGenerator(abc.ABC):
         """Create a new episode from a given description."""
         ...
 
-    def create_all_episodes(self) -> list[EpisodeWithTranscript]:
+    def create_all_episodes(
+        self, curriculum: Optional[list[EpisodeWithDescription]] = None
+    ) -> list[EpisodeWithTranscript]:
         """Create all episodes for the show.
 
         Incrementally creates shows, since each show will have awareness of the
@@ -227,7 +229,7 @@ class OpenAIGuidanceShowGenerator(ShowGenerator):
         openai_key: str,
         openai_organization: Optional[str] = None,
         episode_count: int = 10,
-        episode_length_minutes: float = 5,
+        episode_length_minutes: float = 3,
     ):
         self.title = title
         self.show_description = show_description
@@ -244,7 +246,7 @@ class OpenAIGuidanceShowGenerator(ShowGenerator):
         with system():
             response = self.llm + (
                 "You are a helpful and intelligent lecturer who hosts a "
-                "podcast series. Your job is to combine the request with your "
+                "lecture series. Your job is to combine the request with your "
                 "own domain knowledge in order to plan a lecture series that "
                 "is informative and entertaining."
             )
@@ -281,11 +283,14 @@ class OpenAIGuidanceShowGenerator(ShowGenerator):
             each line. It should look like this:
 
             ```
-            {{"episode_title": "Episode 1: Introduction", "episode_description": "We discuss the life and work of Ludwig van Beethoven, the famous composer."}}
-            {{"episode_title": "Episode 2: Vienna", "episode_description": "We discuss Beethoven's move to Vienna and his early professional life there. We also discuss his relationship with Haydn and Mozart, and the influence they had on his early compositions."}}
+            {{"episode_title": "Episode 1: ...", "episode_description": " ... "}}
+            {{"episode_title": "Episode 2: ...", "episode_description": " ... "}}
             ```
 
             etc.
+
+            Remember that EVERY episode needs to pertain directly to the show description, and should build upon the previous episodes. Do NOT write about off-topic material EVER.
+
             Nest your response in triple-backticks, like this: ```
             """
 
@@ -336,7 +341,7 @@ Make sure that the podcast is casual but precise, conversational, and not too de
 
 IMPORTANT: DO NOT include speaker markings like "HOST: ", and DO NOT include timestamps or section/chapter headers like [INTRODUCTION], as this transcript will be read exactly as it is written. If you include these items, you will be punished, as this is NOT correct.
 
-Include a VERY brief introduction and conclusion. The introduction should explain what the lecture is about and why it is important. You may reference other episodes ("recall from Episode 3" etc) if you need to. The conclusion should summarize the main points of the lecture. The name of the Podcast producer company is Guppy Courses."""
+Include a one sentence introduction and a very short conclusion. The introduction should explain what the lecture is about and why it is important. You may reference other episodes ("recall from Episode X" or "we will address later in Episode X" etc) if you need to, but don't expect the listener to be familiar with future episodes. The conclusion should summarize the main points of the lecture. The name of the Podcast producer company is Guppy Courses."""
             )
 
         with user():
@@ -349,6 +354,8 @@ ALL PREVIOUS EPISODES:
                 transcript += f"""\
 {i + 1}. {ep.episode_title}: {ep.episode_description}
 """
+            if index == 0:
+                transcript += """THIS IS THE FIRST EPISODE."""
             transcript += f"""\
 ---
 THIS EPISODE TITLE: {curriculum[index].episode_title}
@@ -371,9 +378,11 @@ THIS EPISODE TRANSCRIPT:
             Transcript(stripped_lec),
         )
 
-    def create_all_episodes(self) -> list[EpisodeWithTranscript]:
+    def create_all_episodes(
+        self, curriculum: Optional[list[EpisodeWithDescription]] = None
+    ) -> list[EpisodeWithTranscript]:
         """Create all episodes serially."""
-        curriculum = self.create_curriculum()
+        curriculum = self.create_curriculum() if curriculum is None else curriculum
         episodes = []
         for i in range(self.episode_count):
             episodes.append(self.create_episode_transcript(curriculum, i))
