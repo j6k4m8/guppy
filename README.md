@@ -28,16 +28,22 @@ You have to move a dist directory of the web app to `pb_public` for it to be ren
 
 ### Running
 
+Each in its own terminal:
+
 ```bash
-./pocketbase serve --debug --http 0.0.0.0:8090
+$ ./pocketbase serve --debug --http 0.0.0.0:8090
+$ cd guppy_web && npm run dev
+$ cd guppy_py && source venv/bin/activate && watch -n 1200 python3 ./guppy_worker.py
 ```
+
+````
 
 You also need to periodically run the show generator (which someday will be done with a long-running service or cron job). Right now it lives in `guppy_py`:
 
 ```bash
 cd guppy_py
 python ./guppy_worker.py
-```
+````
 
 ## Features
 
