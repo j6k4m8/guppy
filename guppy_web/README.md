@@ -1,11 +1,11 @@
 # Guppy
 
-## Installation
+## Building
 
-### Prerequisites
+You have to move a dist directory to `pb_public` for it to be rendered by pocketbase.
 
 ```bash
-brew install ffmpeg
+ npm run build -- --outDir "../pb_public"
 ```
 
 ---

@@ -341,7 +341,7 @@ Make sure that the podcast is casual but precise, conversational, and not too de
 
 IMPORTANT: DO NOT include speaker markings like "HOST: ", and DO NOT include timestamps or section/chapter headers like [INTRODUCTION], as this transcript will be read exactly as it is written. If you include these items, you will be punished, as this is NOT correct.
 
-Include a one sentence introduction and a very short conclusion. The introduction should explain what the lecture is about and why it is important. You may reference other episodes ("recall from Episode X" or "we will address later in Episode X" etc) if you need to, but don't expect the listener to be familiar with future episodes. The conclusion should summarize the main points of the lecture. The name of the Podcast producer company is Guppy Courses."""
+Include a one sentence introduction and a very short conclusion. The introduction should explain what the lecture is about and why it is important. You may reference other episodes ("recall from Episode X" or "we will address later in Episode X" etc) if you need to, but don't expect the listener to be familiar with future episodes. Include a material review in the final episode. The conclusion should summarize the main points of the lecture. The name of the Podcast producer company is Guppy Courses."""
             )
 
         with user():
@@ -356,6 +356,8 @@ ALL PREVIOUS EPISODES:
 """
             if index == 0:
                 transcript += """THIS IS THE FIRST EPISODE."""
+            if index == self.episode_count - 1:
+                transcript += """THIS IS THE LAST EPISODE."""
             transcript += f"""\
 ---
 THIS EPISODE TITLE: {curriculum[index].episode_title}
