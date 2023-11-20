@@ -1,16 +1,12 @@
 <script lang="ts">
-    import { onMount, onDestroy } from "svelte";
-    import { currentUser, pb } from "./lib/pocketbase";
+    import { onMount } from "svelte";
+    import { pb } from "./lib/pocketbase";
     import NewShowPrompt from "./NewShowPrompt.svelte";
     import ShowDetails from "./ShowDetails.svelte";
 
     let shows: any[] = [];
     let showRequests: any[] = [];
     let selectedShow: any = null;
-
-    // currentUser.subscribe((user) => {
-    //     // Refresh the list of shows when the user changes
-    // });
 
     onMount(async () => {
         shows = (await pb.collection("shows").getList()).items;

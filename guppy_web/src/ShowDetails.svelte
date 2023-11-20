@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { onMount, onDestroy } from "svelte";
-    import { currentUser, pb } from "./lib/pocketbase";
+    import { onMount } from "svelte";
+    import { pb } from "./lib/pocketbase";
 
     // Get the attribute props from the parent component
     export let show;
@@ -21,6 +21,7 @@
     <h2>
         {show?.title}
     </h2>
+    <a href="http://localhost:8090/pod/{show.id}" target="_blank" class="podcast-link">Podcast Link</a>
 
     <ul>
         <!-- Eps -->
@@ -60,5 +61,14 @@
         border-radius: 4px;
         padding: 1rem;
         margin-bottom: 1rem;
+    }
+
+    .podcast-link {
+        color: #fff;
+        background: darkorange;
+        padding: 0.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        margin-left: 1rem;
     }
 </style>
