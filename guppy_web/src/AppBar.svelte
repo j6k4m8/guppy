@@ -6,7 +6,7 @@
 <div class="appbar">
     <div class="row">
         <div class="column brand">
-            <img src={GuppyPNG} width="32" height="32" alt="StudyGuppy" />
+            <img src={GuppyPNG} width="32" height="32" alt="Study Guppy" />
             Guppy
         </div>
         <div class="column account">
